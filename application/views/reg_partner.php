@@ -1,6 +1,6 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
-form_open('registration/reguser/reg');
+form_open('registration/regpartner/reg');
 ?>
 <label for="Login">Ћогин</label>
 <input type="text" name="login" value="<?php echo set_value('login'); ?>", 'placeholder' => '¬ведите ваш логин'/>

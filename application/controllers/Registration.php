@@ -49,11 +49,14 @@ class Registration extends CI_Controller {
 
 	        if ($this->form_validation->run() == TRUE)
 	        {
+	        	$pass = random_string('alnum', 5);
           		$query = array(
-				        'login' => $this->input->post('login');,
-				        'email' => $this->input->post('email');,
-				        'phone' => $this->input->post('phone');,
-				        'fio'   => $this->input->post('fio');
+				        'Login_Users' => $this->input->post('login'),
+				        'Email_Users' => $this->input->post('email'),
+				        'Phone_Users' => $this->input->post('phone'),
+				        'Pass_Users'  => $this->encrypt->sha1($pass),
+				        'FIO__Users'  => $this->input->post('fio'),
+				        'ID_Group'    => $this->config->item('id_group_start')
 				);
 
 				$this->db->insert('users', $query);
@@ -72,11 +75,38 @@ class Registration extends CI_Controller {
 	public function regpartner()
 	{
 		$data['Title'] = "Регистрация партнера";
+        $data['page'] = 'reg_partner';
 
-		$hidden = array('username' => 'Joe', 'member_id' => '234');
-		$data['Form'] = "Регистрация партнера";
+		if !($this->uri->segment(3) === FALSE)
+		{
+				$this->form_validation->set_rules('login', 'Login', 'required|min_length[5]|max_length[12]');
+				$this->form_validation->set_rules('email', 'Email', 'required|valid_email|is_unique[users.Email_Users]');
+		        $this->form_validation->set_rules('phone', 'Phone', 'required|is_unique[users.Phone_Users]');
+		        $this->form_validation->set_rules('fio', 'FIO', 'required');
 
-		$this->load->view('reg_partner', $data);
+	        if ($this->form_validation->run() == TRUE)
+	        {
+	        	$pass = random_string('alnum', 5);
+          		$query = array(
+				        'Login_Users' => $this->input->post('login'),
+				        'Email_Users' => $this->input->post('email'),
+				        'Phone_Users' => $this->input->post('phone'),
+				        'Pass_Users'  => $this->encrypt->sha1($pass),
+				        'FIO__Users'  => $this->input->post('fio'),
+				        'ID_Group'    => $this->config->item('id_group_start')
+				);
+
+				$this->db->insert('users', $query);
+
+
+
+	        	$data['backpage'] = 'registration/regpartner';
+	        	$data['page'] = 'formsuccess';
+
+	        }
+		}
+
+		$this->load->view('main', $data);
 	}
 
 	public function regcompany()
