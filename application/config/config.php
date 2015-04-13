@@ -519,3 +519,4 @@ $config['sms_pass'] = '';
 */
 $config['id_group_start'] = 1;
 $config['id_group_partner'] = 2;
+$config['id_group_company'] = 3;

@@ -32,13 +32,13 @@ class Registration extends CI_Controller {
 
 	public function index()
 	{
-		$this->load->view('welcome_message');
+		$this->load->view('reg');
 	}
 
 	public function reguser()
 	{
 		$data['title'] = "Регистрация пользователя";
-        $data['page'] = 'reg_user';
+        $data['page'] = 'reg/user';
 
 		if !($this->uri->segment(3) === FALSE)
 		{
@@ -49,19 +49,17 @@ class Registration extends CI_Controller {
 
 	        if ($this->form_validation->run() == TRUE)
 	        {
-	        	$pass = random_string('alnum', 5);
+	        	$pass = random_string('alnum', 6);
           		$query = array(
 				        'Login_Users' => $this->input->post('login'),
 				        'Email_Users' => $this->input->post('email'),
 				        'Phone_Users' => $this->input->post('phone'),
 				        'Pass_Users'  => $this->encrypt->sha1($pass),
-				        'FIO__Users'  => $this->input->post('fio'),
+				        'FIO_Users'  => $this->input->post('fio'),
 				        'ID_Group'    => $this->config->item('id_group_start')
 				);
 
 				$this->db->insert('users', $query);
-
-
 
 	        	$data['backpage'] = 'registration/reguser';
 	        	$data['page'] = 'formsuccess';
@@ -75,7 +73,7 @@ class Registration extends CI_Controller {
 	public function regpartner()
 	{
 		$data['Title'] = "Регистрация партнера";
-        $data['page'] = 'reg_partner';
+        $data['page'] = 'reg/partner';
 
 		if !($this->uri->segment(3) === FALSE)
 		{
@@ -86,19 +84,17 @@ class Registration extends CI_Controller {
 
 	        if ($this->form_validation->run() == TRUE)
 	        {
-	        	$pass = random_string('alnum', 5);
+	        	$pass = random_string('alnum', 6);
           		$query = array(
 				        'Login_Users' => $this->input->post('login'),
 				        'Email_Users' => $this->input->post('email'),
 				        'Phone_Users' => $this->input->post('phone'),
 				        'Pass_Users'  => $this->encrypt->sha1($pass),
-				        'FIO__Users'  => $this->input->post('fio'),
-				        'ID_Group'    => $this->config->item('id_group_start')
+				        'FIO_Users'  => $this->input->post('fio'),
+				        'ID_Group'    => $this->config->item('id_group_partner')
 				);
 
 				$this->db->insert('users', $query);
-
-
 
 	        	$data['backpage'] = 'registration/regpartner';
 	        	$data['page'] = 'formsuccess';
@@ -112,6 +108,41 @@ class Registration extends CI_Controller {
 	public function regcompany()
 	{
 	    $data['title'] = "Регистрация компании";
-		$this->load->view('reg_company', $data);
+        $data['page'] = 'reg/company';
+
+		if !($this->uri->segment(3) === FALSE)
+		{
+				$this->form_validation->set_rules('login', 'Login', 'required|min_length[5]|max_length[12]');
+				$this->form_validation->set_rules('inn', 'INN', 'required|min_length[5]|is_unique[company.INN_Company]');
+				$this->form_validation->set_rules('address', 'Address', 'required');
+				$this->form_validation->set_rules('uraddress', 'Uraddress', 'required');
+				$this->form_validation->set_rules('email', 'Email', 'required|valid_email|is_unique[users.Email_Company]');
+		        $this->form_validation->set_rules('phone', 'Phone', 'required|is_unique[users.Phone_Users]');
+		        $this->form_validation->set_rules('fio', 'FIO', 'required');
+
+	        if ($this->form_validation->run() == TRUE)
+	        {
+	        	$pass = random_string('alnum', 6);
+          		$query = array(
+				        'Login_Company' => $this->input->post('login'),
+				        'Email_Company' => $this->input->post('email'),
+				        'Uraddress_Company' => $this->input->post('uraddress'),
+				        'Address_Company' => $this->input->post('address'),
+				        'INN_Company' => $this->input->post('inn'),
+				        'Phone_Company' => $this->input->post('phone'),
+				        'Pass_Company'  => $this->encrypt->sha1($pass),
+				        'FIO_Company'  => $this->input->post('fio'),
+				        'ID_Group'    => $this->config->item('id_group_company')
+				);
+
+				$this->db->insert('users', $query);
+
+	        	$data['backpage'] = 'registration/regcompany';
+	        	$data['page'] = 'formsuccess';
+
+	        }
+		}
+
+		$this->load->view('main', $data);
 	}
 }
