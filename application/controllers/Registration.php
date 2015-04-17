@@ -55,7 +55,7 @@ class Registration extends CI_Controller {
 				        'Email_Users' => $this->input->post('email'),
 				        'Phone_Users' => $this->input->post('phone'),
 				        'Pass_Users'  => $this->encrypt->sha1($pass),
-				        'FIO_Users'  => $this->input->post('fio'),
+				        'FIO_Users'   => $this->input->post('fio'),
 				        'ID_Group'    => $this->config->item('id_group_start')
 				);
 
@@ -90,7 +90,7 @@ class Registration extends CI_Controller {
 				        'Email_Users' => $this->input->post('email'),
 				        'Phone_Users' => $this->input->post('phone'),
 				        'Pass_Users'  => $this->encrypt->sha1($pass),
-				        'FIO_Users'  => $this->input->post('fio'),
+				        'FIO_Users'   => $this->input->post('fio'),
 				        'ID_Group'    => $this->config->item('id_group_partner')
 				);
 
@@ -124,18 +124,18 @@ class Registration extends CI_Controller {
 	        {
 	        	$pass = random_string('alnum', 6);
           		$query = array(
-				        'Login_Company' => $this->input->post('login'),
-				        'Email_Company' => $this->input->post('email'),
+				        'Login_Company' 	=> $this->input->post('login'),
+				        'Email_Company' 	=> $this->input->post('email'),
 				        'Uraddress_Company' => $this->input->post('uraddress'),
-				        'Address_Company' => $this->input->post('address'),
-				        'INN_Company' => $this->input->post('inn'),
-				        'Phone_Company' => $this->input->post('phone'),
-				        'Pass_Company'  => $this->encrypt->sha1($pass),
-				        'FIO_Company'  => $this->input->post('fio'),
-				        'ID_Group'    => $this->config->item('id_group_company')
+				        'Address_Company' 	=> $this->input->post('address'),
+				        'INN_Company' 		=> $this->input->post('inn'),
+				        'Phone_Company' 	=> $this->input->post('phone'),
+				        'Pass_Company'  	=> $this->encrypt->sha1($pass),
+				        'FIO_Company'  		=> $this->input->post('fio'),
+				        'ID_Group'    		=> $this->config->item('id_group_company')
 				);
 
-				$this->db->insert('users', $query);
+				$this->db->insert('Company', $query);
 
 	        	$data['backpage'] = 'registration/regcompany';
 	        	$data['page'] = 'formsuccess';
